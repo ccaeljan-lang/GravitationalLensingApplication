@@ -14,14 +14,14 @@ typedef struct {
 
 void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     
-    /* 1. Parse string input */
+    /* Parse string input */
     char *inputStr = mxArrayToString(prhs[0]);
 
     LensSystem systemData;
     strcpy(systemData.lensName, inputStr);
     mxFree(inputStr);
 
-    /* 2. Read scalar and array inputs */
+    /* Read scalar and array inputs */
     systemData.massSolar = mxGetScalar(prhs[1]);
     systemData.totalPixels = (int)mxGetNumberOfElements(prhs[2]);
     systemData.thetaE = sqrt(systemData.massSolar / 1e11) * 1.5;
@@ -29,11 +29,11 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
     double *xIn = mxGetPr(prhs[2]);
     double *yIn = mxGetPr(prhs[3]);
 
-    /* 3. Dynamic memory allocation using calloc */
+    /* Dynamic memory allocation using calloc */
     double *betaXTemp = (double *)calloc(systemData.totalPixels, sizeof(double));
     double *betaYTemp = (double *)calloc(systemData.totalPixels, sizeof(double));
 
-    /* 4. Simple loop for light deflection calculations */
+    /* Simple loop for light deflection calculations */
     double thetaESq = systemData.thetaE * systemData.thetaE;
 
     for (int i = 0; i < systemData.totalPixels; i++) {
@@ -49,7 +49,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
         betaYTemp[i] = yVal - (thetaESq * yVal) / rSq;
     }
 
-    /* 5. Create MATLAB output matrices */
+    /* Create MATLAB output matrices */
     plhs[0] = mxCreateDoubleMatrix(
         mxGetM(prhs[2]),
         mxGetN(prhs[2]),
@@ -71,7 +71,7 @@ void mexFunction(int nlhs, mxArray *plhs[], int nrhs, const mxArray *prhs[]) {
         betaYOut[i] = betaYTemp[i];
     }
 
-    /* 6. Create report log string */
+    /* Create report log string */
     char reportBuffer[256];
 
     sprintf(
