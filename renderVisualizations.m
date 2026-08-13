@@ -1,5 +1,5 @@
 function renderVisualizations(axis1, axis2, axis3, axis4, xGrid, yGrid, lensedImage, xSource, ySource, thetaE, tableData)
-    % Chart 1: 2D Spatial Image Map
+    % Visual 1: Lensed View
     imagesc(axis1, xGrid(1,:), yGrid(:,1)', lensedImage);
     colormap(axis1, 'hot');
     axis(axis1, 'image');
@@ -9,7 +9,7 @@ function renderVisualizations(axis1, axis2, axis3, axis4, xGrid, yGrid, lensedIm
     title(axis1, 'Lensed View');
     hold(axis1, 'off');
 
-    % Chart 2: 2D Deflection Field
+    % Visual 2: Gravitational Deflection Field
     rGrid = sqrt(xGrid.^2 + yGrid.^2);
 
     % Calculate gravitational deflection magnitude
@@ -38,7 +38,7 @@ function renderVisualizations(axis1, axis2, axis3, axis4, xGrid, yGrid, lensedIm
     xlabel(axis2, 'X Position');
     ylabel(axis2, 'Y Position');
 
-    % Chart 3: 1D Radial Line Plot
+    % Visual 3: Brightness Line Profile
     midRow = floor(size(lensedImage, 1) / 2);
     xAxis = xGrid(midRow, :);
     intensityLine = lensedImage(midRow, :);
@@ -48,7 +48,7 @@ function renderVisualizations(axis1, axis2, axis3, axis4, xGrid, yGrid, lensedIm
     ylabel(axis3, 'Intensity');
     title(axis3, 'Brightness Line Profile');
 
-    % Chart 4: 2D Scatter Plot
+    % Visual 4: Image Root Locations
     scatter(axis4, xSource, ySource, 80, 'g', 'filled');
     hold(axis4, 'on');
     rPlus = tableData.angularPosition(1);
